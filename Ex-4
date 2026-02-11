@@ -1,0 +1,203 @@
+import 'package:flutter/material.dart';
+void main() {
+  runApp(const MyApp());
+}
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: LoginPage(),
+    );
+  }
+}
+class LoginPage extends StatefulWidget {
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController username = TextEditingController();
+  final TextEditingController password = TextEditingController();
+  bool hidePassword = true;
+  bool rememberMe = false;
+  void login() {
+    bool success = username.text == "admin" && password.text == "1234";
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor:
+            success ? Colors.purple.shade400 : Colors.deepPurple.shade300,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        content: Row(
+          children: [
+            const Text("🧸", style: TextStyle(fontSize: 18)),
+            const SizedBox(width: 10),
+            Text(
+              success
+                  ? "Welcome back, Teddy friend!"
+                  : "Teddy says check your details",
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0xffe9d5ff), // light lavender
+              Color(0xffc4b5fd), // soft purple
+              Color(0xffa78bfa), // pastel violet
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 22),
+              padding: const EdgeInsets.all(26),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.96),
+                borderRadius: BorderRadius.circular(36),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 28,
+                    offset: Offset(0, 16),
+                  )
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // TEDDY ICON
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Color(0xffede9fe),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Text(
+                      "🧸",
+                      style: TextStyle(fontSize: 40),
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  const Text(
+                    "Teddy Login",
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xff5b21b6),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  const Text(
+                    "Soft • Cozy • Purple",
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Color(0xff7c3aed),
+                    ),
+                  ),
+                  const SizedBox(height: 22),
+                  // USERNAME
+                  TextField(
+                    controller: username,
+                    decoration: InputDecoration(
+                      hintText: "Username",
+                      prefixIcon: const Icon(Icons.person_outline,
+                          color: Color(0xff7c3aed)),
+                      filled: true,
+                      fillColor: const Color(0xfff5f3ff),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(26),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  // PASSWORD
+                  TextField(
+                    controller: password,
+                    obscureText: hidePassword,
+                    decoration: InputDecoration(
+                      hintText: "Password",
+                      prefixIcon: const Icon(Icons.lock_outline,
+                          color: Color(0xff7c3aed)),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          hidePassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Color(0xff7c3aed),
+                        ),
+                        onPressed: () =>
+                            setState(() => hidePassword = !hidePassword),
+                      ),
+                      filled: true,
+                      fillColor: const Color(0xfff5f3ff),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(26),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  // REMEMBER ME
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: rememberMe,
+                        activeColor: Colors.deepPurple,
+                        onChanged: (v) =>
+                            setState(() => rememberMe = v!),
+                      ),
+                      const Text(
+                        "Remember me",
+                        style: TextStyle(color: Color(0xff5b21b6)),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 14),
+                  // LOGIN BUTTON
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: login,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xff7c3aed),
+                        padding:
+                            const EdgeInsets.symmetric(vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        elevation: 8,
+                      ),
+                      child: const Text(
+                        "LOGIN 🧸",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }}
