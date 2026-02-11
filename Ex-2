@@ -1,0 +1,80 @@
+import 'package:flutter/material.dart';
+
+
+void main()
+
+{
+
+runApp(MYapp());
+
+}
+
+class MYapp extends StatefulWidget {
+
+const MYapp({super.key});
+
+
+@override
+
+State<MYapp> createState() => _MyWidgetState();
+
+}
+
+
+class _MyWidgetState extends State<MYapp> {
+
+String value ="Welcome!!!! Click the button";
+
+@override
+
+Widget build(BuildContext context) {
+
+return MaterialApp(
+
+debugShowCheckedModeBanner: false,
+
+home: Scaffold(appBar: AppBar(title: Text("Welcome Page"),),
+
+body: Column(children: [Text('$value'),FloatingActionButton(onPressed: ()
+
+{
+
+setState(() {
+
+value = "Hii!!Hemamalini";
+
+});
+
+})
+
+,FloatingActionButton(onPressed: ()
+
+{
+
+setState(() {
+
+value = "How are you!!";
+
+});
+
+})
+
+,FloatingActionButton(onPressed: ()
+
+{
+
+setState(() {
+
+value = "Bye byeee!!!";
+
+});
+
+})
+
+]),),
+
+);
+
+}
+
+}
