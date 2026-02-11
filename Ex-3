@@ -1,0 +1,293 @@
+import 'package:flutter/material.dart'; 
+
+ 
+
+void main() { 
+
+  runApp(const FriendApp()); 
+
+} 
+
+ 
+
+class FriendApp extends StatelessWidget { 
+
+  const FriendApp({super.key}); 
+
+ 
+
+  @override 
+
+  Widget build(BuildContext context) { 
+
+    return const MaterialApp( 
+
+      debugShowCheckedModeBanner: false, 
+
+      home: RecordPage(), 
+
+    ); 
+
+  } 
+
+} 
+
+ 
+
+class RecordPage extends StatefulWidget { 
+
+  const RecordPage({super.key}); 
+
+ 
+
+  @override 
+
+  State<RecordPage> createState() => _RecordPageState(); 
+
+} 
+
+ 
+
+class _RecordPageState extends State<RecordPage> { 
+
+  final TextEditingController idController = TextEditingController(); 
+
+  final TextEditingController nameController = TextEditingController(); 
+
+  final TextEditingController sectionController = TextEditingController(); 
+
+  final TextEditingController departmentController = TextEditingController(); 
+
+ 
+
+  final List<String> records = []; 
+
+ 
+
+  void addRecord() { 
+
+    if (idController.text.isNotEmpty && 
+
+        nameController.text.isNotEmpty && 
+
+        sectionController.text.isNotEmpty && 
+
+        departmentController.text.isNotEmpty) { 
+
+      setState(() { 
+
+        records.add( 
+
+          "ID: ${idController.text}\n" 
+
+          "Name: ${nameController.text}\n" 
+
+          "Section: ${sectionController.text}\n" 
+
+          "Department: ${departmentController.text}", 
+
+        ); 
+
+ 
+
+        idController.clear(); 
+
+        nameController.clear(); 
+
+        sectionController.clear(); 
+
+        departmentController.clear(); 
+
+      }); 
+
+    } 
+
+  } 
+
+ 
+
+  @override 
+
+  void dispose() { 
+
+    idController.dispose(); 
+
+    nameController.dispose(); 
+
+    sectionController.dispose(); 
+
+    departmentController.dispose(); 
+
+    super.dispose(); 
+
+  } 
+
+ 
+
+  @override 
+
+  Widget build(BuildContext context) { 
+
+    return Scaffold( 
+
+      appBar: AppBar( 
+
+        title: const Text("Student Management Application"), 
+
+        centerTitle: true, 
+
+      ), 
+
+      body: Padding( 
+
+        padding: const EdgeInsets.all(15), 
+
+        child: Column( 
+
+          children: [ 
+
+            TextField( 
+
+              controller: idController, 
+
+              decoration: const InputDecoration( 
+
+                labelText: "Roll No", 
+
+                border: OutlineInputBorder(), 
+
+              ), 
+
+            ), 
+
+            const SizedBox(height: 10), 
+
+            TextField( 
+
+              controller: nameController, 
+
+               decoration: const InputDecoration( 
+
+                labelText: "Student Name", 
+
+                border: OutlineInputBorder(), 
+
+              ), 
+
+            ), 
+
+            const SizedBox(height: 10), 
+
+            TextField( 
+
+              controller: sectionController, 
+
+              decoration: const InputDecoration( 
+
+                labelText: "Section", 
+
+                border: OutlineInputBorder(), 
+
+              ), 
+
+            ), 
+
+            const SizedBox(height: 10), 
+
+            TextField( 
+
+              controller: departmentController, 
+
+              decoration: const InputDecoration( 
+
+                labelText: "Department", 
+
+                border: OutlineInputBorder(), 
+
+              ), 
+
+            ), 
+
+            const SizedBox(height: 10), 
+
+            ElevatedButton( 
+
+              onPressed: addRecord, 
+
+              child: const Text("Save"), 
+
+            ), 
+
+            const SizedBox(height: 10), 
+
+            Expanded( 
+
+              child: ListView.builder( 
+
+                itemCount: records.length, 
+
+                 itemBuilder: (context, index) { 
+
+                  return Card( 
+
+                    child: Padding( 
+
+                      padding: const EdgeInsets.all(8.0), 
+
+                      child: Text(records[index]), 
+
+                    ), 
+
+                  ); 
+
+                }, 
+
+              ), 
+
+            ), 
+
+          ], 
+
+        ), 
+
+      ), 
+
+    ); 
+
+  } 
+
+} 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
