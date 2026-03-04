@@ -1,0 +1,170 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(TravelGuideApp());
+}
+
+class TravelGuideApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Travel Guide',
+      theme: ThemeData(
+        primarySwatch: Colors.pink,
+      ),
+      home: HomeScreen(),
+    );
+  }
+}
+
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _currentIndex = 0;
+
+  // These pages correspond to the index of the BottomNavigationBar
+  final List<Widget> _pages = [
+    Center(child: Text("Welcome to our Travel Guide", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold))),
+    Center(child: Text("Top Picks For You", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold))),
+    Center(child: Text("Profile", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold))),
+    Center(child: Text("Budget Friendly Places", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold))),
+    Center(child: Text("Trending Places", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold))),
+  ];
+
+  // Helper function to handle navigation from both Drawer and BottomBar
+  void _onItemTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Travel Guide App"),
+        centerTitle: true,
+        // Using your custom pink color
+        backgroundColor: Color.fromARGB(255, 255, 174, 255),
+      ),
+
+      // Drawer
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 255, 174, 255),
+              ),
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  "Travel Menu",
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 255, 5, 201),
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text("Home"),
+              selected: _currentIndex == 0,
+              onTap: () {
+                _onItemTapped(0);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.place),
+              title: Text("Destinations"),
+              selected: _currentIndex == 1,
+              onTap: () {
+                _onItemTapped(1);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              // Profile logic
+              leading: Icon(Icons.person),
+              title: Text("Profile"),
+              selected: _currentIndex == 2,
+              onTap: () {
+                _onItemTapped(2);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.savings),
+              title: Text("Economy"),
+              selected: _currentIndex == 3,
+              onTap: () {
+                _onItemTapped(3);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.whatshot),
+              title: Text("Trends"),
+              selected: _currentIndex == 4,
+              onTap: () {
+                _onItemTapped(4);
+                Navigator.pop(context);
+              },
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.info),
+              title: Text("About"),
+              onTap: () {
+                Navigator.pop(context);
+                // You could navigate to a separate About page here
+              },
+            ),
+          ],
+        ),
+      ),
+
+      body: _pages[_currentIndex],
+
+      // Bottom Navigation Bar
+      bottomNavigationBar: BottomNavigationBar(
+        // FIX: Setting type to fixed ensures all icons show up when there are 4+ items
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _currentIndex,
+        selectedItemColor: Color.fromARGB(255, 255, 5, 201),
+        unselectedItemColor: Colors.grey,
+        onTap: _onItemTapped,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.place),
+            label: "Explore",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: "Profile",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.savings),
+            label: "Economy",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.whatshot),
+            label: "Trends",
+          ),
+        ],
+      ),
+    );
+  }
+}
