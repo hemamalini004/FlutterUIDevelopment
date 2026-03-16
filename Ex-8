@@ -1,0 +1,160 @@
+import 'dart:html' as html;
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: VoiceMessageUI(),
+    );
+  }
+}
+
+class VoiceMessageUI extends StatefulWidget {
+  @override
+  _VoiceMessageUIState createState() => _VoiceMessageUIState();
+}
+
+class _VoiceMessageUIState extends State<VoiceMessageUI> {
+  TextEditingController controller = TextEditingController();
+  String message = "";
+  bool isPlaying = false;
+
+  void speak() {
+    if (controller.text.trim().isEmpty) return;
+
+    setState(() {
+      message = controller.text;
+      isPlaying = true;
+    });
+
+    try {
+      var utterance = html.SpeechSynthesisUtterance(message);
+      html.window.speechSynthesis?.speak(utterance);
+      utterance.onEnd.listen((event) {
+        setState(() {
+          isPlaying = false;
+        });
+      });
+    } catch (e) {
+      setState(() {
+        isPlaying = false;
+        message = "Your browser does not support speech synthesis.";
+      });
+    }
+  }
+
+  void stop() {
+    html.window.speechSynthesis?.cancel();
+    setState(() {
+      isPlaying = false;
+    });
+  }
+
+  Widget voiceBubble() {
+    if (message.isEmpty) return SizedBox();
+    return Container(
+      margin: EdgeInsets.only(top: 30),
+      padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+      decoration: BoxDecoration(
+        color: Colors.greenAccent.shade700,
+        borderRadius: BorderRadius.circular(25),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 6,
+            offset: Offset(2, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          IconButton(
+            icon: Icon(
+              isPlaying ? Icons.stop : Icons.play_arrow,
+              color: Colors.white,
+            ),
+            onPressed: isPlaying ? stop : speak,
+          ),
+          Icon(
+            Icons.graphic_eq,
+            color: Colors.white70,
+            size: 28,
+          ),
+          SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              message,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey.shade100,
+      appBar: AppBar(
+        title: Text("Voice Message Generator"),
+        centerTitle: true,
+        backgroundColor: Colors.greenAccent.shade700,
+        elevation: 4,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(24),
+          child: Column(
+            children: [
+              TextField(
+                controller: controller,
+                decoration: InputDecoration(
+                  hintText: "Type your message...",
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 16,
+                    horizontal: 20,
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: speak,
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    backgroundColor: Colors.greenAccent.shade700,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                  ),
+                  child: Text(
+                    "Generate Voice Message",
+                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  ),
+                ),
+              ),
+              voiceBubble(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
